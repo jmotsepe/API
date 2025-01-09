@@ -14,6 +14,7 @@ namespace API.Forms
     public partial class FormAddSupplier : Form
     {
         private string supplierID = "SUP" + NextNumber.NextSequence("tblSupplier", "supplier_ID");
+
         public FormAddSupplier()
         {
             InitializeComponent();
@@ -47,12 +48,12 @@ namespace API.Forms
 
         private void BtnCancel_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
 
         private void FormAddSupplier_Load(object sender, EventArgs e)
         {
-
+            TxtSupplierID.Text = supplierID;
         }
     }
 }
