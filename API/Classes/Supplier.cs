@@ -28,7 +28,7 @@ namespace API_Asset_Management
 
         }
 
-        public Supplier(string supplierID, string supplierName, string vatReference, string supplierContact, string telephone, string email, string mobile, string postal, string physical, bool edit)
+        public Supplier(string supplierID, string supplierName, string vatReference, string supplierContact, string telephone, string email, string mobile, string postal, string physical)
         {
             SupplierID = supplierID;
             SupplierName = supplierName;
@@ -40,22 +40,31 @@ namespace API_Asset_Management
             Postal = postal;
             Physical = physical;
 
-            if (edit == false)
-            {
-                Stored_Procedure = "sp_addSupplier";
-            }
-            else if (edit == true)
-            {
-                Stored_Procedure = "sp_editSupplier";
-            }
-            ConfirmSupplier();
+            AddSupplier();
         }
 
-        private void ConfirmSupplier()
+        public Supplier(string supplierID, string supplierName, string vatReference, string supplierContact, string telephone, string email, string mobile, string postal, string physical, string update)
         {
+            SupplierID = supplierID;
+            SupplierName = supplierName;
+            VatReference = vatReference;
+            SupplierContact = supplierContact;
+            Telephone = telephone;
+            Email = email;
+            Mobile = mobile;
+            Postal = postal;
+            Physical = physical;
+
+            UpdateSupplier();
+        }
+
+
+        private void AddSupplier()
+        {
+            string storedProc = "sp_addSupplier";
             using (SqlConnection con = new SqlConnection(Connection.ConnectionString()))
             {
-                using (SqlCommand cmd = new SqlCommand(Stored_Procedure, con))
+                using (SqlCommand cmd = new SqlCommand(storedProc, con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@supplierID", SqlDbType.VarChar).Value = SupplierID;
@@ -77,10 +86,7 @@ namespace API_Asset_Management
                     {
                         con.Open();
                         cmd.ExecuteNonQuery();
-                        if (Stored_Procedure == "sp_addSupplier")
-                            MessageBox.Show("Supplier added successfuly", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        else
-                            MessageBox.Show("Supplier was successfuly updated", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Supplier added successfuly", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         con.Close();
                     }
                     catch (SqlException ex)
@@ -89,6 +95,11 @@ namespace API_Asset_Management
                     }
                 }
             }
+        }
+
+        private void UpdateSupplier()
+        {
+
         }
     }
 }
